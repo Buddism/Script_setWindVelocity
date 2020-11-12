@@ -37,16 +37,19 @@ function RainWind_update()
 	if($Pref::WindRain::RainNumDrops > -1)
 		Rain.numDrops = $Pref::WindRain::RainNumDrops;
 	else Rain.numDrops = $Rain::numDrops;
-	
+
 	//function should just be named sendUpdate
 	Rain.inspectPostApply();
-	
+
 	if($Pref::WindRain::WindEnabled)
 	{
 		$Pref::WindRain::WindVelocity = VectorAdd($Pref::WindRain::WindVelocity, "0 0 0"); //make sure its a vector3
 		Sky.setWindVelocity(getWord($Pref::WindRain::WindVelocity, 0), getWord($Pref::WindRain::WindVelocity, 1), getWord($Pref::WindRain::WindVelocity, 2));
 		Sky.windEffectPrecipitation = $Pref::WindRain::WindEffectRainEnabled;
-	}
+	} else {
+        Sky.setWindVelocity(0, 0, 0);
+        Sky.windEffectPrecipitation = false;
+    }
 	Sky.sendUpdate();
 }
 
@@ -58,7 +61,7 @@ package Script_SetWindVelocityPackage
 		%r = parent::setSkyBox (%filename);
 		if(isObject(rain))
 			RainWind_Update();
-			
+
 		return %r;
 	}
 };
@@ -86,7 +89,7 @@ if(!isObject(ScriptSetWindVelocityPrefs))
     //general regen settings
     WV_registerPref("Wind Options", "Wind Enabled"        			 , "bool"   , 	 "$Pref::WindRain::WindEnabled"      	    , "Script_SetWindVelocity", 0, "");
 	WV_registerPref("Wind Options", "Wind Velocity (vec3f)"          , "string" , 	 "$Pref::WindRain::WindVelocity"      	    , "Script_SetWindVelocity", 0, "128 1");
-	
+
 	WV_registerPref("Rain Options", "Wind Effects Precipitation"     , "bool"   , 	 "$Pref::WindRain::WindEffectRainEnabled"   , "Script_SetWindVelocity", 0, "");
     WV_registerPref("Rain Options", "Rain Multiplier"     			 , "num"    , 	 "$Pref::WindRain::RainMultiplier"          , "Script_SetWindVelocity", 1, "0.001 100 0.001");
 	WV_registerPref("Rain Options", "Rain Num Drops (-1 for default)", "num"    , 	 "$Pref::WindRain::RainNumDrops"          , "Script_SetWindVelocity",   -1, "-1 100000 1");
