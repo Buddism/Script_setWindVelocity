@@ -68,6 +68,9 @@ package Script_SetWindVelocityPackage
 activatePackage(Script_SetWindVelocityPackage);
 resetAllOpCallFunc();
 
+//blg pref update for client
+//GlassServerControlC.setEnabled(0);GlassServerControlC.setEnabled(1);
+
 //super hacky for debug
 //if(isObject(ScriptSetWindVelocityPrefs))
 //	ScriptSetWindVelocityPrefs.delete();
